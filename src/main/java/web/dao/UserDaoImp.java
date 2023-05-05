@@ -32,9 +32,11 @@ public class UserDaoImp implements UserDao {
     public void editUser(long id, User user){
         EntityManager entity = factory.createEntityManager();
         entity.getTransaction().begin();
-        Query query = entity.createQuery("update User set name='"+ user.getName()+
-                "', surname='"+user.getSurname()+"' where id="+id);
-        query.executeUpdate();
+        entity.createQuery("update User set name= :name , surname = :surname where id = :id")
+                .setParameter("name", user.getName())
+                .setParameter("surname", user.getSurname())
+                .setParameter("id", id)
+                .executeUpdate();
         entity.getTransaction().commit();
     }
 
@@ -51,7 +53,8 @@ public class UserDaoImp implements UserDao {
     @Override
     public User showUserById(long id) {
         EntityManager entity = factory.createEntityManager();
-        TypedQuery<User> query = entity.createQuery("from User where id="+id, User.class);
+        TypedQuery<User> query = entity.createQuery("from User where id= :id", User.class)
+                .setParameter("id", id);
         return query.getSingleResult();
     }
 
