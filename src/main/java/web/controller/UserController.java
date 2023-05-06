@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PatchMapping(value = "users/{id}/edit")
-    public String editUser(@PathVariable("id") long id, User user){
+    public String editUser(@PathVariable("id") long id, @ModelAttribute("user") User user){
         userService.editUser(id, user);
         return "redirect:/users";
     }
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public String createUser(User user){
+    public String createUser(@ModelAttribute("user") User user){
         userService.saveUser(user);
         return "redirect:/users";
     }
